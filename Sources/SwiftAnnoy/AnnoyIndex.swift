@@ -184,14 +184,16 @@ public class AnnoyIndex<T: AnnoyOperable> {
      */
     public func getDistance(item1: Int, item2: Int) -> T? {
         if (item1 >= self.numberOfItems) || (item2 >= self.numberOfItems) { return nil }
+        var metric = distanceMetric
+        var dataType = dataType
         switch T.self {
         case is Float.Type:
             var result = Float(-1.0)
-            C_get_distance(Int32(item1), Int32(item2),&result, &distanceMetric, &dataType, indexPointer)
+            C_get_distance(Int32(item1), Int32(item2),&result, &metric, &dataType, indexPointer)
             return result as? T
         case is Double.Type:
             var result = Double(-1.0)
-            C_get_distance(Int32(item1), Int32(item2),&result, &distanceMetric, &dataType, indexPointer)
+            C_get_distance(Int32(item1), Int32(item2),&result, &metric, &dataType, indexPointer)
             return result as? T
         default:
             return nil
@@ -209,14 +211,16 @@ public class AnnoyIndex<T: AnnoyOperable> {
      */
     public func getNNsForItem(item: Int, neighbors: Int, search_k: Int = -1) -> (indices: [Int], distances: [T])? {
         var indices: [Int32] = Array(repeating: -1, count: neighbors)
+        var metric = distanceMetric
+        var dataType = dataType
         switch T.self {
         case is Float.Type:
             var distances = Array(repeating: Float(-1.0), count: neighbors)
-            C_get_nns_by_item(Int32(item), Int32(neighbors), Int32(search_k), &indices, &distances, &distanceMetric, &dataType, indexPointer)
+            C_get_nns_by_item(Int32(item), Int32(neighbors), Int32(search_k), &indices, &distances, &metric, &dataType, indexPointer)
             return (indices.toInt(), distances as! [T])
         case is Double.Type:
             var distances = Array(repeating: Double(-1.0), count: neighbors)
-            C_get_nns_by_item(Int32(item), Int32(neighbors), Int32(search_k), &indices, &distances, &distanceMetric, &dataType, indexPointer)
+            C_get_nns_by_item(Int32(item), Int32(neighbors), Int32(search_k), &indices, &distances, &metric, &dataType, indexPointer)
             return (indices.toInt(), distances as! [T])
         default:
             return nil
