@@ -22,6 +22,7 @@ public class AnnoyIndex<T: AnnoyOperable> {
         case euclidean
         /// The L1 or city block distance
         case manhattan
+        case hamming
     }
 
     //MARK: - Properties

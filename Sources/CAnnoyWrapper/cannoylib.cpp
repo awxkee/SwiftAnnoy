@@ -46,6 +46,28 @@ const void * C_initializeAnnoyIndex(int f, char* dist_metric, char* dtype) {
             Annoy::AnnoyIndex<int, double, Annoy::Angular, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy> *index = new Annoy::AnnoyIndex<int, double, Annoy::Angular, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy>(f);
             return (void *)index;
         }
+    } else if (strcmp(dtype, "Int64") == 0) {
+        if (strcmp(dist_metric, "hamming") == 0) {
+            Annoy::AnnoyIndex<int, uint64_t, Annoy::Hamming, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy> *index = new Annoy::AnnoyIndex<int, uint64_t, Annoy::Hamming, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy>(f);
+            return (void *)index;
+        } else if (strcmp(dist_metric, "euclidean") == 0) {
+            Annoy::AnnoyIndex<int, uint64_t, Annoy::Euclidean, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy> *index = new Annoy::AnnoyIndex<int, uint64_t, Annoy::Euclidean, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy>(f);
+            return (void *)index;
+        } else if (strcmp(dist_metric, "dotProduct") == 0) {
+            Annoy::AnnoyIndex<int, uint64_t, Annoy::DotProduct, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy> *index = new Annoy::AnnoyIndex<int, uint64_t, Annoy::DotProduct, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy>(f);
+            return (void *)index;
+        }
+    } else if (strcmp(dtype, "Int") || strcmp(dtype, "Int32")) {
+        if (strcmp(dist_metric, "hamming") == 0) {
+            Annoy::AnnoyIndex<int, int32_t, Annoy::Hamming, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy> *index = new Annoy::AnnoyIndex<int, int32_t, Annoy::Hamming, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy>(f);
+            return (void *)index;
+        } else if (strcmp(dist_metric, "euclidean") == 0) {
+            Annoy::AnnoyIndex<int, int32_t, Annoy::Euclidean, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy> *index = new Annoy::AnnoyIndex<int, int32_t, Annoy::Euclidean, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy>(f);
+            return (void *)index;
+        } else if (strcmp(dist_metric, "dotProduct") == 0) {
+            Annoy::AnnoyIndex<int, int32_t, Annoy::DotProduct, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy> *index = new Annoy::AnnoyIndex<int, int32_t, Annoy::DotProduct, Annoy::Kiss32Random, Annoy::AnnoyIndexSingleThreadedBuildPolicy>(f);
+            return (void *)index;
+        }
     }
     int fail = -1;
     int* failPtr = &fail;
