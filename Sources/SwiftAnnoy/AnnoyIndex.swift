@@ -196,6 +196,14 @@ public class AnnoyIndex<T: AnnoyOperable> {
             var result = Double(-1.0)
             C_get_distance(Int32(item1), Int32(item2),&result, &metric, &dataType, indexPointer)
             return result as? T
+        case is Int32.Type:
+            var result = Int32(-1)
+            C_get_distance(Int32(item1), Int32(item2),&result, &metric, &dataType, indexPointer)
+            return result as? T
+        case is Int64.Type:
+            var result = Int64(-1)
+            C_get_distance(Int32(item1), Int32(item2),&result, &metric, &dataType, indexPointer)
+            return result as? T
         default:
             return nil
         }
@@ -223,6 +231,14 @@ public class AnnoyIndex<T: AnnoyOperable> {
             var distances = Array(repeating: Double(-1.0), count: neighbors)
             C_get_nns_by_item(Int32(item), Int32(neighbors), Int32(search_k), &indices, &distances, &metric, &dataType, indexPointer)
             return (indices.toInt(), distances as! [T])
+        case is Int32.Type:
+            var distances = Array(repeating: Int32(-1), count: neighbors)
+            C_get_nns_by_item(Int32(item), Int32(neighbors), Int32(search_k), &indices, &distances, &metric, &dataType, indexPointer)
+            return (indices.toInt(), distances as! [T])
+        case is Int64.Type:
+            var distances = Array(repeating: Int64(-1), count: neighbors)
+            C_get_nns_by_item(Int32(item), Int32(neighbors), Int32(search_k), &indices, &distances, &metric, &dataType, indexPointer)
+            return (indices.toInt(), distances as! [T])
         default:
             return nil
         }
@@ -246,6 +262,14 @@ public class AnnoyIndex<T: AnnoyOperable> {
             return (results.toInt(), distances as! [T])
         case is Double.Type:
             var distances = Array(repeating: Double(-1.0), count: neighbors)
+            C_get_nns_by_vector(&vector, Int32(neighbors), Int32(search_k), &results, &distances, &distanceMetric, &dataType, indexPointer)
+            return (results.toInt(), distances as! [T])
+        case is Int32.Type:
+            var distances = Array(repeating: Int32(-1.0), count: neighbors)
+            C_get_nns_by_vector(&vector, Int32(neighbors), Int32(search_k), &results, &distances, &distanceMetric, &dataType, indexPointer)
+            return (results.toInt(), distances as! [T])
+        case is Int64.Type:
+            var distances = Array(repeating: Int64(-1.0), count: neighbors)
             C_get_nns_by_vector(&vector, Int32(neighbors), Int32(search_k), &results, &distances, &distanceMetric, &dataType, indexPointer)
             return (results.toInt(), distances as! [T])
         default:
@@ -274,6 +298,16 @@ public class AnnoyIndex<T: AnnoyOperable> {
         }
         if T.self is Double.Type {
             var item: [Double] = Array(repeating: -1, count: itemLength)
+            C_get_item(Int32(index), &item, &distanceMetric, &dataType, indexPointer)
+            return item as? [T]
+        }
+        if T.self is Int32.Type {
+            var item: [Int32] = Array(repeating: -1, count: itemLength)
+            C_get_item(Int32(index), &item, &distanceMetric, &dataType, indexPointer)
+            return item as? [T]
+        }
+        if T.self is Int64.Type {
+            var item: [Int64] = Array(repeating: -1, count: itemLength)
             C_get_item(Int32(index), &item, &distanceMetric, &dataType, indexPointer)
             return item as? [T]
         }
